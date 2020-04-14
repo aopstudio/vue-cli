@@ -11,8 +11,8 @@
 </style>
 <script>
 export default {
-    name:"Graph",
-    data () {
+  name:"Graph",
+  data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       categories: [],
