@@ -20,14 +20,18 @@ export default {
     data() {
         return {
             search: {
-                name: ""
+                name: this.keyword
             }
         };
     },
     methods: {
         submit(){
-            this.search.name=this.$store.state.count;
+            this.$store.commit('submit',this.search.name);
         }
+    },
+    mounted() {
+        this.search.name = this.$store.state.keyword;
     }
+
 }
 </script>

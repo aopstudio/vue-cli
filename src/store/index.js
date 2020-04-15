@@ -5,9 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    count:"0"
+    keyword:"0"
   },
   mutations: {
+    submit (state, n) {
+      state.keyword = n
+    }
   },
   actions: {
   },
