@@ -1,6 +1,15 @@
 <template>
-   
-<div id="myChart"></div>
+<div>
+    <el-form :model="search" ref="search">
+        <el-form-item prop="name" label="关键词">
+            <el-input v-model="search.name"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button @click="submit">搜索</el-button>
+        </el-form-item>
+    </el-form>
+    <div id="myChart"></div>
+</div>
 </template>
 
 <style>
@@ -18,7 +27,10 @@ export default {
       categories: [],
       resData: [],
       graphData: [],
-      graphLinks: []
+      graphLinks: [],
+      search: {
+        name: ''
+      }
     }
   },
   mounted(){
@@ -31,6 +43,102 @@ export default {
     //this.drawLine();
   },
   methods: {
+    submit(){
+        let me=this;
+        axios.get('http://localhost:8080/graph/node',{
+            params:{
+                name:me.search.name, 
+            }
+        })
+        .then(function (response){
+            me.packNode(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    },
+    packAll(data){
+        this.graphData=[];
+        this.graphLinks=[];
+        for(var i=0,len=data.length;i<len;i++){
+            this.graphData.push({
+                name: data[i].name,
+                des: 'nodedes05',
+                symbolSize: 50,
+                category: 1,
+            });
+            if("includes" in data[i]){
+                let dataIncludes=data[i].includes;
+                for(var j=0,lenj=dataIncludes.length;j<lenj;j++){
+                    this.graphLinks.push({
+                        source: data[i].name,
+                        target: dataIncludes[j].name,
+                        name: '包含',
+                        des: j
+                    })
+                }
+            } 
+            if("derives" in data[i]){   
+                let dataDerives=data[i].derives;
+                for(var j=0,lenj=dataDerives.length;j<lenj;j++){
+                    this.graphLinks.push({
+                        source: data[i].name,
+                        target: dataDerives[j].name,
+                        name: '衍生出',
+                        des: j
+                    })
+                }
+            }        
+        }
+        this.drawLine();
+    },
+    packNode(data){
+        this.graphData=[];
+        this.graphLinks=[];
+        for(var i=0,len=data.length;i<len;i++){
+            this.graphData.push({
+                name: data[i].name,
+                des: 'nodedes05',
+                symbolSize: 50,
+                category: 1,
+            });
+            if("includes" in data[i]){
+                let dataIncludes=data[i].includes;
+                for(var j=0,lenj=dataIncludes.length;j<lenj;j++){
+                    this.graphData.push({
+                        name: dataIncludes[j].name,
+                        des: 'nodedes05',
+                        symbolSize: 50,
+                        category: 1,
+                    });
+                    this.graphLinks.push({
+                        source: data[i].name,
+                        target: dataIncludes[j].name,
+                        name: '包含',
+                        des: j
+                    })
+                }
+            } 
+            if("derives" in data[i]){   
+                let dataDerives=data[i].derives;
+                for(var j=0,lenj=dataDerives.length;j<lenj;j++){
+                    this.graphData.push({
+                        name: dataDerives[j].name,
+                        des: 'nodedes05',
+                        symbolSize: 50,
+                        category: 1,
+                    });
+                    this.graphLinks.push({
+                        source: data[i].name,
+                        target: dataDerives[j].name,
+                        name: '衍生出',
+                        des: j
+                    })
+                }
+            }        
+        }
+        this.drawLine();
+    },
     drawLine(){
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart'));
@@ -90,38 +198,7 @@ export default {
         let me=this;
         axios.get('http://localhost:8080/graph/all')
         .then(function (response){
-            me.resData=response.data;
-            for(var i=0,len=response.data.length;i<len;i++){
-                me.graphData.push({
-                    name: me.resData[i].name,
-                    des: 'nodedes05',
-                    symbolSize: 50,
-                    category: 1,
-                });
-                if("includes" in me.resData[i]){
-                    let dataIncludes=me.resData[i].includes;
-                    for(var j=0,lenj=dataIncludes.length;j<lenj;j++){
-                        me.graphLinks.push({
-                            source: me.resData[i].name,
-                            target: dataIncludes[j].name,
-                            name: '包含',
-                            des: j
-                        })
-                    }
-                } 
-                if("derives" in me.resData[i]){   
-                    let dataDerives=me.resData[i].derives;
-                    for(var j=0,lenj=dataDerives.length;j<lenj;j++){
-                        me.graphLinks.push({
-                            source: me.resData[i].name,
-                            target: dataDerives[j].name,
-                            name: '衍生出',
-                            des: j
-                        })
-                    }
-                }        
-            }
-            me.drawLine();
+            me.packAll(response.data);
         })
         .catch(function (error) {
             console.log(error);
