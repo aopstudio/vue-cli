@@ -9,13 +9,34 @@
         </el-form-item>
     </el-form>
     <div id="myChart"></div>
+    <el-form :model="newItem" ref="newItem">
+        <el-form-item prop="source" label="新建关系">
+            <el-input v-model="newItem.from"></el-input>
+        </el-form-item>
+        <el-form-item prop="relation" label="关系">
+            <el-select v-model="newItem.type" placeholder="请选择">
+                <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop="to">
+            <el-input v-model="newItem.to"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button @click="add">添加</el-button>
+        </el-form-item>
+    </el-form>
 </div>
 </template>
 
 <style>
     #myChart{
         width: 100%;
-        height: 1000px;
+        height: 500px;
     }
 </style>
 <script>
@@ -23,14 +44,29 @@ export default {
   name:"Graph",
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      categories: [],
-      resData: [],
-      graphData: [],
-      graphLinks: [],
-      search: {
+        options: [{
+            value: 'includes',
+            label: '包含'
+        }, {
+            value: 'derives',
+            label: '衍生出'
+        }, {
+            value: 'relates',
+            label: '联系'
+        }],
+        msg: 'Welcome to Your Vue.js App',
+        categories: [],
+        resData: [],
+        graphData: [],
+        graphLinks: [],
+        newItem: {
+            from:'',
+            to:'',
+            type:''
+        },
+        search: {
         name: ''
-      }
+        }
     }
   },
   mounted(){
@@ -52,6 +88,16 @@ export default {
         })
         .then(function (response){
             me.packNode(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    },
+    add(){
+        let me=this;
+        axios.post('http://localhost:8080/graph/node',me.newItem)
+        .then(function (response){
+            console.log(response.data);
         })
         .catch(function (error) {
             console.log(error);
