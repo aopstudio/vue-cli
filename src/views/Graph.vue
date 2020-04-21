@@ -1,42 +1,49 @@
 <template>
-<div>
-    <el-form :model="search" ref="search">
-        <el-form-item prop="name" label="关键词">
-            <el-input v-model="search.name"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button @click="submit">搜索</el-button>
-        </el-form-item>
-    </el-form>
+<div class="app">
+    <div class="search">
+        <el-form :model="search" ref="search">
+            <el-form-item prop="name" label="关键词">
+                <el-input v-model="search.name"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="submit">搜索</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
     <div id="myChart"></div>
-    <el-form :model="newItem" ref="newItem">
-        <el-form-item prop="source" label="新建关系">
-            <el-input v-model="newItem.from"></el-input>
-        </el-form-item>
-        <el-form-item prop="relation" label="关系">
-            <el-select v-model="newItem.type" placeholder="请选择">
-                <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-                </el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item prop="to">
-            <el-input v-model="newItem.to"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button @click="add">添加</el-button>
-        </el-form-item>
-    </el-form>
+    <div class="newItem">
+        <el-form :model="newItem" ref="newItem">
+            <el-form-item prop="source" label="新建关系">
+                <el-input v-model="newItem.from"></el-input>
+            </el-form-item>
+            <el-form-item prop="relation" label="关系">
+                <el-select v-model="newItem.type" placeholder="请选择">
+                    <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item prop="to">
+                <el-input v-model="newItem.to"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="add">添加</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 </div>
 </template>
 
 <style>
     #myChart{
         width: 100%;
-        height: 500px;
+        height: 600px;
+    }
+    .app{
+        margin: auto 25%;
     }
 </style>
 <script>
@@ -97,7 +104,7 @@ export default {
         let me=this;
         axios.post('http://localhost:8080/graph/node',me.newItem)
         .then(function (response){
-            console.log(response.data);
+            me.loadData();
         })
         .catch(function (error) {
             console.log(error);
@@ -191,7 +198,7 @@ export default {
         // 绘制图表
         myChart.setOption({
             title: {
-              text: 'ECharts 关系图'
+              
             },
             tooltip: {},
             
