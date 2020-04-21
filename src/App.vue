@@ -1,13 +1,17 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/Timelist">Timelist</router-link> |
-      <router-link to="/Graph">Graph</router-link> |
-      <router-link to="/Editor">Editor</router-link>
-    </div>
+  <el-container id="app">
+    <el-header id="nav">
+      <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal"  router>
+        <el-menu-item index="/home">Home</el-menu-item>
+        <el-menu-item index="/timelist">Timelist</el-menu-item>
+        <el-menu-item index="/graph">Graph</el-menu-item>
+        <el-menu-item index="/editor">Editor</el-menu-item>
+        <el-menu-item index="/login" style="margin-left:60%">Sign In</el-menu-item>
+        <el-menu-item index="/register">Sign Up</el-menu-item>
+      </el-menu>
+    </el-header>
     <router-view/>
-  </div>
+  </el-container>
 </template>
 
 <style>
@@ -18,19 +22,27 @@
   text-align: center;
   color: #2c3e50;
 }
-router-view {
-  margin: 15px auto;
-}
+
 #nav {
-  padding: 30px;
+  margin: 10px;
+  text-align: left;
 }
 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  margin: 10px;
 }
 
 #nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+
+<script>
+export default {
+  name: "App",
+  methods:{
+  }
+}
+</script>

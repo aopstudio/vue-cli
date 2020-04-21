@@ -15,9 +15,6 @@
 </template>
 
 <style scoped>
-    .app{
-        text-align: center;
-    }
     .timeline-panel{
         text-align: center;
         margin: auto 25%;
@@ -50,7 +47,7 @@ export default {
             let me=this;
             axios.get('http://localhost:8080/timeline/info',{
                 params:{
-                    headline:'Java' 
+                    headline:me.headline 
                 }
             })
             .then(function (response){

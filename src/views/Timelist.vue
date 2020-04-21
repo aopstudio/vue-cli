@@ -18,7 +18,7 @@
 </template>
 <style scoped>
  .form-group{
-     margin: 10px 25%;
+    margin: 10px 25%;
  }
 </style>
 <script>
@@ -56,9 +56,6 @@ export default {
             .then(function (res){
                 me.title.headline='';
                 me.title.text='';
-                if(res.data=='success'){
-                    this.alert('新建成功');
-                }
                 me.loadData();
             })
             .catch(function (error) {

@@ -37,12 +37,12 @@
 </div>
 </template>
 
-<style>
+<style scoped>
     #myChart{
         width: 100%;
         height: 600px;
     }
-    .app{
+    .search,.newItem{
         margin: auto 25%;
     }
 </style>

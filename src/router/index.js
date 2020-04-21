@@ -5,6 +5,7 @@ import Timeline from '../views/Timeline.vue'
 import Timelist from '../views/Timelist.vue'
 import Graph from '../views/Graph.vue'
 import Editor from '../views/Editor.vue'
+import Tutorial from '../views/Tutorial.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -40,6 +41,11 @@ Vue.use(VueRouter)
     path: '/editor',
     name: 'Editor',
     component: Editor
+  },
+  {
+    path: '/tutorial',
+    name: 'Tutorial',
+    component: Tutorial
   }
 ]
 
