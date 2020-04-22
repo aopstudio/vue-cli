@@ -12,7 +12,10 @@
 
 <script>
 export default {
-
+    name: 'Tutorial',
+    data () {
+        
+    }
 }
 </script>
 

@@ -2,7 +2,7 @@
   <el-container id="app">
     <el-header id="nav">
       <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal"  router>
-        <el-menu-item index="/home">Home</el-menu-item>
+        <el-menu-item index="/">Home</el-menu-item>
         <el-menu-item index="/timelist">Timelist</el-menu-item>
         <el-menu-item index="/graph">Graph</el-menu-item>
         <el-menu-item index="/editor">Editor</el-menu-item>
