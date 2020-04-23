@@ -12,6 +12,11 @@
       </el-menu>
     </el-header>
     <router-view/>
+    <el-footer>
+      <div style="margin-left:40%">
+      <el-link href="http://www.beian.miit.gov.cn">浙ICP备17039448号-1 </el-link>
+      </div>
+    </el-footer>
   </el-container>
 </template>
 
@@ -37,6 +42,7 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>
 
 <script>

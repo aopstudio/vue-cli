@@ -10,7 +10,9 @@
         <el-main class="editor">
         <!--<mavon-editor v-model="value" :toolbarsFlag="false" defaultOpen="preview" />-->
             <div >
-            <markdown-it-vue class="md-body" :content="value"/>
+            <markdown-it-vue class="md-body" :content="content.content"/>
+            <mavon-editor v-model="content.content" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
+            <el-button type="primary" @click="submit()" style="margin-top:15px">提交</el-button>
             </div>
         </el-main>
     </el-container>
@@ -23,7 +25,8 @@ export default {
         return{
             value:'# asdf',
             title_id:this.$route.params.id,
-            content_view_list:[]
+            content_view_list:[],
+            content:{}
         }
     },
     mounted(){
@@ -52,7 +55,17 @@ export default {
                 }
             })
             .then(function (response){
-                me.value='# '+response.data.headline+'\n'+response.data.content;
+                me.content=response.data
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        submit(){
+            let me=this;
+            axios.post('http://localhost:8080/tutorial/content',me.content)
+            .then(function (response){
+                me.content=response.data
             })
             .catch(function (error) {
                 console.log(error);
