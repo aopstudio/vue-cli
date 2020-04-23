@@ -43,7 +43,7 @@ Vue.use(VueRouter)
     component: Editor
   },
   {
-    path: '/tutorial',
+    path: '/tutorial/:id',
     name: 'Tutorial',
     component: Tutorial
   }

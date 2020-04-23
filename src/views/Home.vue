@@ -8,14 +8,16 @@
       </el-menu>
     </el-aside>
     <el-main class="home">
-      <el-row gutter=20>
+      <el-row :gutter=10 >
         <el-col :span=8 v-for="item in tutorial_title_list" :key="item.id">
-          <div style="margin-top:15px"> 
-            <el-card > 
-              <span>{{item.headline}}</span>
-              <div class="bottom clearfix">
-                <time class="time">{{ currentDate }}</time>
-                <el-button type="text" class="button">开始学习</el-button>
+          <div style="margin-top:20px"> 
+            <el-card> 
+              <div style="padding: 15px;">
+                <div style="height:20px">{{item.headline}}</div>
+                <div class="bottom clearfix">
+                  <div class="time"></div>
+                  <el-button type="text" class="button" @click="jump(item.id)">开始学习</el-button>
+                </div>
               </div>
             </el-card>
           </div>
@@ -24,7 +26,14 @@
     </el-main>
   </el-container>
 </template>
-
+<style scoped>
+  el-row{
+    flex-wrap: wrap;
+  }
+  el-card{
+    
+  }
+</style>
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
@@ -67,6 +76,9 @@ export default {
       .catch(function (error) {
           console.log(error);
       });
+    },
+    jump(id){
+      this.$router.push('/tutorial/'+id);
     }
   }
 }
