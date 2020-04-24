@@ -38,7 +38,7 @@ Vue.use(VueRouter)
     component: Graph
   },
   {
-    path: '/editor',
+    path: '/editor/:id',
     name: 'Editor',
     component: Editor
   },
@@ -46,7 +46,7 @@ Vue.use(VueRouter)
     path: '/tutorial/:id',
     name: 'Tutorial',
     component: Tutorial
-  }
+  },
 ]
 
 const router = new VueRouter({
@@ -54,5 +54,6 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+router.beforeEach
 
 export default router

@@ -23,6 +23,8 @@
           </div>
         </el-col>
       </el-row>
+      <el-input type="text" v-model="new_title.headline"></el-input>
+      <el-button @click="add">新建</el-button>
     </el-main>
   </el-container>
 </template>
@@ -46,7 +48,11 @@ export default {
   data(){
     return {
       tutorial_catagory_list:[],
-      tutorial_title_list:[]
+      tutorial_title_list:[],
+      new_title:{
+        headline:'',
+        catagory_id:0
+      }
     }
   },
   mounted(){
@@ -62,6 +68,7 @@ export default {
       })
       .then(function (response){
           me.tutorial_title_list=response.data;
+          me.new_title.catagory_id=id;
       })
       .catch(function (error) {
           console.log(error);
@@ -72,6 +79,7 @@ export default {
       axios.get('http://localhost:8080/tutorial/catagory')
       .then(function (response){
           me.tutorial_catagory_list=response.data;
+          me.loadTitle(me.tutorial_catagory_list[0].id);
       })
       .catch(function (error) {
           console.log(error);
@@ -79,6 +87,16 @@ export default {
     },
     jump(id){
       this.$router.push('/tutorial/'+id);
+    },
+    add(){
+      let me=this;
+      axios.post('http://localhost:8080/tutorial/title',me.new_title)
+      .then(function(response){
+        me.loadTitle(me.new_title.catagory_id)
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
     }
   }
 }

@@ -10,9 +10,10 @@
         <el-main class="editor">
         <!--<mavon-editor v-model="value" :toolbarsFlag="false" defaultOpen="preview" />-->
             <div >
-            <markdown-it-vue class="md-body" :content="content.content"/>
-            <mavon-editor v-model="content.content" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
-            <el-button type="primary" @click="submit()" style="margin-top:15px">提交</el-button>
+            <markdown-it-vue class="md-body" :content="content.text"/>
+            <mavon-editor v-model="content.text" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
+            <el-button type="primary" @click="submit()" style="margin-top:15px">提交修改</el-button>
+            <el-button type="primary" @click="create()">新建</el-button>
             </div>
         </el-main>
     </el-container>
@@ -42,6 +43,7 @@ export default {
             })
             .then(function (response){
                 me.content_view_list=response.data;
+                me.loadContent(me.content_view_list[0].content_id);
             })
             .catch(function (error) {
                 console.log(error);
@@ -65,18 +67,19 @@ export default {
             let me=this;
             axios.post('http://localhost:8080/tutorial/content',me.content)
             .then(function (response){
-                me.content=response.data
+                alert(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
+        },
+        create(){
+            this.$router.push('/editor/'+this.title_id);
         }
     }
 }
 </script>
 
 <style scoped>
-    div{
-        
-    }
+
 </style>

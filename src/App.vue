@@ -6,7 +6,6 @@
         <el-menu-item index="/timelist">Timelist</el-menu-item>
         <el-menu-item index="/graph">Graph</el-menu-item>
         <el-menu-item index="/editor">Editor</el-menu-item>
-        <el-menu-item index="/tutorial">Tutorial</el-menu-item>
         <el-menu-item index="/login" style="margin-left:40%">Sign In</el-menu-item>
         <el-menu-item index="/register">Sign Up</el-menu-item>
       </el-menu>
