@@ -6,6 +6,7 @@ import Timelist from '../views/Timelist.vue'
 import Graph from '../views/Graph.vue'
 import Editor from '../views/Editor.vue'
 import Tutorial from '../views/Tutorial.vue'
+import Login from '../views/Login.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -47,6 +48,11 @@ Vue.use(VueRouter)
     name: 'Tutorial',
     component: Tutorial
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  }
 ]
 
 const router = new VueRouter({

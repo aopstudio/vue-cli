@@ -15,8 +15,8 @@ Vue.use(MarkdownItVue)
 Vue.use(mavonEditor)
 Vue.use(Vuex)
 Vue.prototype.$echarts = echarts;
-Vue.config.productionTip = false
-
+Vue.config.productionTip = false;
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 new Vue({
   router,
   store,

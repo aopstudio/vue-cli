@@ -1,14 +1,22 @@
 <template>
   <el-container id="app">
     <el-header id="nav">
+      <el-col :span=21>
       <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal"  router>
         <el-menu-item index="/">Home</el-menu-item>
         <el-menu-item index="/timelist">Timelist</el-menu-item>
         <el-menu-item index="/graph">Graph</el-menu-item>
         <el-menu-item index="/editor">Editor</el-menu-item>
-        <el-menu-item index="/login" style="margin-left:40%">Sign In</el-menu-item>
-        <el-menu-item index="/register">Sign Up</el-menu-item>
-      </el-menu>
+      </el-menu> 
+      </el-col>
+      <el-col :span=3 style="margin-top:20px" v-if="!logged">
+        <el-button @click="login" style="margin-left:10%">登录</el-button>
+        <el-button @click="register">注册</el-button>
+      </el-col>
+      <el-col :span=3 style="margin-top:20px" v-if="logged">
+        <el-button @click="manage" style="margin-left:10%">管理</el-button>
+        <el-button @click="logout">注销</el-button>
+      </el-col>
     </el-header>
     <router-view/>
     <el-footer>
@@ -47,7 +55,30 @@
 <script>
 export default {
   name: "App",
+  data(){
+    return{
+      logged:false,
+    }
+  },
+  mounted(){
+    if(localStorage.getItem('token'))
+      this.logged=true;
+  },
   methods:{
+    logout(){
+      localStorage.removeItem('token');
+      this.logged=false;
+      window.alert('注销成功');
+      this.$forceUpdate();
+    },
+    login(){
+      this.$router.push('/login');
+    }
+  },
+  computed: {
+    isLogin(){
+      return localStorage.getItem('token');
+    }
   }
 }
 </script>
