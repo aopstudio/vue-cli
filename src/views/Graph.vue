@@ -105,12 +105,17 @@ export default {
     },
     add(){
         let me=this;
-        axios.post('http://localhost:8080/graph/node',me.newItem)
+        axios.post('http://localhost:8080/graph/node',me.newItem,
+        {
+            headers:{
+                'Authorization':localStorage.getItem('token')
+            }
+        })
         .then(function (response){
             me.loadData();
         })
         .catch(function (error) {
-            console.log(error);
+            window.alert(error);
         });
     },
     packAll(data){
@@ -252,12 +257,16 @@ export default {
     },
     loadData(){
         let me=this;
-        axios.get('http://localhost:8080/graph/all')
+        axios.get('http://localhost:8080/graph/all',{
+            headers:{
+                'Authorization':localStorage.getItem('token')
+            }
+        })
         .then(function (response){
             me.packAll(response.data);
         })
         .catch(function (error) {
-            console.log(error);
+            window.alert('请求失败，请尝试重新登录');
         });
     }
   }
