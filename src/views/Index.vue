@@ -1,5 +1,13 @@
 <template>
-  <router-view/>
+  <el-container id="index">
+    <NavBar></NavBar>
+    <router-view/>
+    <el-footer>
+      <div style="margin-left:40%">
+      <el-link href="http://www.beian.miit.gov.cn">浙ICP备17039448号-1   </el-link>
+      </div>
+    </el-footer>
+  </el-container>
 </template>
 
 <style>
@@ -28,7 +36,7 @@
 </style>
 
 <script>
-import NavBar from './components/NavBar'
+import NavBar from '@/components/NavBar.vue'
 export default {
   name: "App",
   data(){
@@ -55,6 +63,9 @@ export default {
     isLogin(){
       return localStorage.getItem('token');
     }
+  },
+  components:{
+    NavBar:NavBar,
   }
 }
 </script>

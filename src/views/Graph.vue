@@ -11,7 +11,7 @@
         </el-form>
     </div>
     <div id="myChart"></div>
-    <div class="newItem">
+    <div class="newItem" v-if="this.$store.state.logged">
         <el-form :model="newItem" ref="newItem">
             <el-form-item prop="source" label="新建关系">
                 <el-input v-model="newItem.from"></el-input>
@@ -72,11 +72,14 @@ export default {
             type:''
         },
         search: {
-        name: ''
-        }
+            name: ''
+        },
+        logged: false
     }
   },
   mounted(){
+    if(localStorage.getItem('token'))
+        this.logged=true;
     for (var i = 0; i < 2; i++) {
         this.categories[i] = {
             name: '类目' + i

@@ -8,8 +8,11 @@
                 <el-form-item prop="password" label="密码">
                     <el-input type="password" v-model="user.password"></el-input>
                 </el-form-item>
+                <el-form-item prop="password" label="重复输入密码">
+                    <el-input type="password" v-model="dpassword"></el-input>
+                </el-form-item>
                 <el-form-item>
-                    <el-button @click="submit()">登录</el-button>
+                    <el-button @click="submit()">注册</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -18,30 +21,30 @@
 
 <script>
 export default {
-    name:'Login',
+    name:'Register',
     data(){
         return{
             user: {
                 username:'',
                 password:''
             },
-            token:''
+            token:'',
+            dpassword:''
         }
     },
     methods:{
         submit(){
             let me=this;
-            axios.post('http://localhost:8080/auth/login',me.user)
+            axios.post('http://localhost:8080/auth/register',me.user)
             .then(function (response){
                 //console.log(response.data);
-                if(response.data.startsWith("Bearer")){
-                    localStorage.setItem('token',response.data);
-                    me.$store.commit("login",true);
-                    window.alert('登录成功');
-                    me.$router.push('/')
+                if(response.data.startsWith("Dup")){
+                    window.alert('用户名已存在');
                 }
-                else
-                    window.alert('用户名或密码错误');
+                else{
+                    window.alert('注册成功');
+                    me.$router.push('/');
+                }
                 
             })
             .catch(function (error) {

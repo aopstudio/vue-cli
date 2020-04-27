@@ -23,17 +23,16 @@
           </div>
         </el-col>
       </el-row>
-      <el-input type="text" v-model="new_title.headline"></el-input>
-      <el-button @click="add">新建</el-button>
+      <el-row v-if="this.$store.state.logged">
+        <el-input type="text" v-model="new_title.headline"></el-input>
+        <el-button @click="add">新建</el-button>
+      </el-row>
     </el-main>
   </el-container>
 </template>
 <style scoped>
   el-row{
     flex-wrap: wrap;
-  }
-  el-card{
-    
   }
 </style>
 <script>
@@ -52,7 +51,8 @@ export default {
       new_title:{
         headline:'',
         catagory_id:0
-      }
+      },
+      logged:false,
     }
   },
   mounted(){
@@ -98,6 +98,17 @@ export default {
           console.log(error);
       });
     }
-  }
+  },
+   computed: {
+      listenlogged() {
+        return this.$store.state.logged;
+      }
+    },
+    watch:{
+      listenlogged:function(old,newd){
+        console.log(old)
+        this.logged = old;
+      }
+    }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <div id='timeline-embed' style="width: 100%; height: 600px"></div>
-        <div class="timeline-panel">
+        <div class="timeline-panel" v-if="this.$store.state.logged">
           <div class="tldate"><el-input type="number" placeholder="年份" v-model="startYear"></el-input></div>
           <div class="tl-heading">
             <el-input type="text" placeholder="标题" v-model="textHeadline"></el-input>
@@ -36,10 +36,13 @@ export default {
             startYear:2020,
             textHeadline:'',
             textText:'',
-            headline:this.$route.params.headline
+            headline:this.$route.params.headline,
+            logged:false,
         }
     },
     mounted(){
+        if(localStorage.getItem('token'))
+            this.logged=true;
         this.loadData();
     },
     methods: {

@@ -5,12 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    keyword:"0"
+    keyword:"0",
+    logged:false
   },
   mutations: {
-    submit (state, n) {
-      state.keyword = n
-    }
+    login (state, n) {
+      state.logged = n
+    },
+    
   },
   actions: {
   },
