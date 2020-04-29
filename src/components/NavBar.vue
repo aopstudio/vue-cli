@@ -59,6 +59,7 @@ export default {
     logout(){
       localStorage.removeItem('token');
       this.$store.commit("login",false);
+      this.$store.commit("admin",false);
       this.logged=false;
       window.alert('注销成功');
       this.$router.push('/');

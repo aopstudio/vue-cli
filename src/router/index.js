@@ -9,6 +9,9 @@ import Tutorial from '../views/Tutorial.vue'
 import Login from '../views/Login.vue'
 import Index from '../views/Index.vue'
 import Register from '../views/Register.vue'
+import Manage from '../views/Manage.vue'
+import Password from '../views/Password.vue'
+import Info from '../views/Info.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -58,7 +61,24 @@ Vue.use(VueRouter)
     path: '/register',
     name: 'Register',
     component: Register
-  }
+  },
+  {
+    path: '/manage',
+    name: 'Manage',
+    component: Manage,
+    children:[
+      {
+        path: '/info',
+        name: 'Info',
+        component: Info
+      },
+      {
+        path: '/password',
+        name: 'Password',
+        component: Password
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({

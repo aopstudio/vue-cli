@@ -34,9 +34,15 @@ export default {
             axios.post('http://localhost:8080/auth/login',me.user)
             .then(function (response){
                 //console.log(response.data);
-                if(response.data.startsWith("Bearer")){
-                    localStorage.setItem('token',response.data);
+                let token=response.data.token;
+                if(token.startsWith("Bearer")){
+                    localStorage.setItem('token',token);
+                    localStorage.setItem('username',response.data.username);
+                    localStorage.setItem('role',response.data.role);
                     me.$store.commit("login",true);
+                    if(response.data.role=="ROLE_ADMIN"){
+                        me.$store.commit("admin",true);
+                    }
                     window.alert('登录成功');
                     me.$router.push('/')
                 }
