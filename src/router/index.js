@@ -66,6 +66,7 @@ Vue.use(VueRouter)
     path: '/manage',
     name: 'Manage',
     component: Manage,
+    redirect: '/password',
     children:[
       {
         path: '/info',

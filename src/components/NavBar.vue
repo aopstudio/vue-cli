@@ -58,6 +58,8 @@ export default {
   methods:{
     logout(){
       localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('role');
       this.$store.commit("login",false);
       this.$store.commit("admin",false);
       this.logged=false;
@@ -69,6 +71,9 @@ export default {
     },
     register(){
         this.$router.push('/register');
+    },
+    manage(){
+      this.$router.push('/manage');
     }
   },
   computed: {
