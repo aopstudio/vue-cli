@@ -91,13 +91,14 @@ export default {
   methods: {
     submit(){
         let me=this;
-        axios.get('http://localhost:8080/graph/node',{
+        axios.get('http://localhost:8080/graph/relation',{
             params:{
                 name:me.search.name, 
             }
         })
         .then(function (response){
-            me.packNode(response.data);
+            //me.packNode(response.data);
+            me.packRelation(response.data);
         })
         .catch(function (error) {
             console.log(error);
@@ -189,6 +190,41 @@ export default {
                         symbolSize: 50,
                         category: 1,
                     });
+                    this.graphLinks.push({
+                        source: data[i].name,
+                        target: dataDerives[j].name,
+                        name: '衍生出',
+                        des: j
+                    })
+                }
+            }        
+        }
+        this.drawLine();
+    },
+    packRelation(data){
+        this.graphData=[];
+        this.graphLinks=[];
+        for(var i=0,len=data.length;i<len;i++){
+            this.graphData.push({
+                name: data[i].name,
+                des: 'nodedes05',
+                symbolSize: 50,
+                category: 1,
+            });
+            if("includes" in data[i]){
+                let dataIncludes=data[i].includes;
+                for(var j=0,lenj=dataIncludes.length;j<lenj;j++){
+                    this.graphLinks.push({
+                        source: data[i].name,
+                        target: dataIncludes[j].name,
+                        name: '包含',
+                        des: j
+                    })
+                }
+            } 
+            if("derives" in data[i]){   
+                let dataDerives=data[i].derives;
+                for(var j=0,lenj=dataDerives.length;j<lenj;j++){
                     this.graphLinks.push({
                         source: data[i].name,
                         target: dataDerives[j].name,

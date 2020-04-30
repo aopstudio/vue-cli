@@ -7,7 +7,7 @@
             <el-menu-item index="/password">修改密码</el-menu-item>
         </el-menu>
         </el-col>
-        <el-col :span=3 style="margin-top:20px" v-if="!logged">
+        <el-col :span=3 style="margin-top:20px">
             <el-button @click="home" style="margin-left:10%">首页</el-button>
             <el-button @click="logout">注销</el-button>
         </el-col>
