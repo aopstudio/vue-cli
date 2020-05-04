@@ -7,6 +7,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button @click="submit">搜索</el-button>
+                <el-button @click="loadExternalNode">外部搜索</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -85,7 +86,7 @@ export default {
             name: '类目' + i
         };
     }
-    this.loadData();
+    //this.loadData();
     //this.drawLine();
   },
   methods: {
@@ -291,19 +292,49 @@ export default {
             }]
         });
     },
-    loadData(){
+    loadExternalNode(){
         let me=this;
-        axios.get('http://localhost:8080/graph/all',{
-            headers:{
-                'Authorization':localStorage.getItem('token')
+        axios.get('http://localhost:8080/graph/out',{
+            params:{
+                name:me.search.name
             }
         })
         .then(function (response){
-            me.packAll(response.data);
+            //me.packNode(response.data);
+            me.packExternal(response.data.category);
         })
         .catch(function (error) {
-            window.alert('请求失败，请尝试重新登录');
+            window.console.log(error);
+            window.alert('查询失败');
         });
+    },
+    packExternal(data){
+        let me=this;
+        this.graphData=[];
+        this.graphLinks=[];
+        this.graphData.push({
+            name: me.search.name,
+            des: 'nodedes05',
+            symbolSize: 50,
+            category: 1,
+        });
+        for(var i=0,len=data.length;i<len;i++){
+            if(data[i]!=me.search.name){
+                this.graphData.push({
+                    name: data[i],
+                    des: 'nodedes05',
+                    symbolSize: 50,
+                    category: 1,
+                });
+                this.graphLinks.push({
+                    source: me.search.name,
+                    target: data[i],
+                    name: '关联',
+                    des: i
+                })
+            }
+        }
+        this.drawLine();
     }
   }
 }
