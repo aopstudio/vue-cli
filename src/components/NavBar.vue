@@ -7,11 +7,11 @@
         <el-menu-item index="/graph">Graph</el-menu-item>
       </el-menu> 
       </el-col>
-      <el-col :span=3 style="margin-top:20px" v-if="!logged">
+      <el-col :span=3 style="margin-top:20px" v-if="!this.$store.state.logged">
         <el-button @click="login" style="margin-left:10%">登录</el-button>
         <el-button @click="register">注册</el-button>
       </el-col>
-      <el-col :span=3 style="margin-top:20px" v-if="logged">
+      <el-col :span=3 style="margin-top:20px" v-if="this.$store.state.logged">
         <el-button @click="manage" style="margin-left:10%">管理</el-button>
         <el-button @click="logout">注销</el-button>
       </el-col>

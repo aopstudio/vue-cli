@@ -31,7 +31,7 @@ export default {
     methods:{
         submit(){
             let me=this;
-            axios.post('http://localhost:8080/auth/changePassword',me.password)
+            axios.post('http://localhost:8080/user/changePassword',me.password)
             .then(function (response){
                 //console.log(response.data);
                 if(response.data=="wrong"){

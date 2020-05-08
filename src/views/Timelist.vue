@@ -70,7 +70,12 @@ export default {
         },
         addData: function(){
             let me=this;
-            axios.post('http://localhost:8080/timeline/title',this.title)
+            axios.post('http://localhost:8080/timeline/title',this.title,
+            {
+                headers:{
+                    'Authorization':localStorage.getItem('token')
+                }
+            })
             .then(function (res){
                 me.title.headline='';
                 me.title.text='';

@@ -21,9 +21,16 @@ export default {
     methods:{
         submit(){
             let me=this;
-            axios.post('http://localhost:8080/tutorial/content',me.content)
+            axios.post('http://localhost:8080/tutorial/content',me.content,
+            {
+                headers:{
+                    'Authorization':localStorage.getItem('token')
+                }
+            })
             .then(function (response){
-                me.content=response.data
+                me.content=response.data;
+                window.alert("添加成功");
+                me.$router.go(-1);
             })
             .catch(function (error) {
                 console.log(error);

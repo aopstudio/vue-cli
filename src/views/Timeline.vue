@@ -68,6 +68,11 @@ export default {
                 text_headline:me.textHeadline,
                 text_text:me.textText,
                 headline:me.headline
+            },
+            {
+                headers:{
+                    'Authorization':localStorage.getItem('token')
+                }
             })
             .then(function (response){
                 me.loadData();

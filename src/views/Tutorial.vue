@@ -9,11 +9,14 @@
         </el-aside>
         <el-main class="editor">
         <!--<mavon-editor v-model="value" :toolbarsFlag="false" defaultOpen="preview" />-->
-            <markdown-it-vue class="md-body" :content="content.text"/>
+            <markdown-it-vue v-if="!edit" class="md-body" :content="content.text"/>
             <div v-if="this.$store.state.logged">
-            <mavon-editor v-model="content.text" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
-            <el-button type="primary" @click="submit()" style="margin-top:15px">提交修改</el-button>
-            <el-button type="primary" @click="create()">新建</el-button>
+            <mavon-editor v-model="content.text" v-if="edit" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
+            <el-button v-if="!edit" type="primary" @click="edit=!edit" style="margin-top:15px">修改</el-button>
+            <el-button v-if="edit" type="primary" @click="submitChange()" style="margin-top:15px">提交修改</el-button>
+            <el-button v-if="edit" type="primary" @click="edit=!edit" style="margin-top:15px">取消</el-button>
+            <el-button v-if="!edit" type="primary" @click="create()">新建</el-button>
+            <el-button v-if="!edit" type="primary" @click="deleteContent()">删除</el-button>
             </div>
             <h1>共{{comment_count}}条评论</h1>
             <el-card class="comment" v-for="item in comments" :key="item.id" style="margin-top:10px;width:80%">
@@ -57,7 +60,8 @@ export default {
             comments:[],
             newCommentText:'',
             pages:0,
-            comment_count:0
+            comment_count:0,
+            edit:false,
         }
     },
     mounted(){
@@ -99,11 +103,32 @@ export default {
             me.loadCommentCount(content_id);
             me.loadComment(content_id,1);
         },
-        submit(){
+        deleteContent(){
             let me=this;
-            axios.post('http://localhost:8080/tutorial/content',me.content)
+            axios.get('http://localhost:8080/tutorial/deleteContent',{
+                params:{
+                    id:me.content_id
+                } 
+            })
             .then(function (response){
-                alert(response.data);
+                window.alert("删除成功");
+                me.loadHeadline();
+            })
+            .catch(function (error) {
+                window.console.log(error);
+            });
+        },
+        submitChange(){
+            let me=this;
+            axios.post('http://localhost:8080/tutorial/content',me.content,
+            {
+                headers:{
+                    'Authorization':localStorage.getItem('token')
+                }
+            })
+            .then(function (response){
+                window.alert("修改成功");
+                me.edit=!me.edit;
             })
             .catch(function (error) {
                 console.log(error);
@@ -128,6 +153,7 @@ export default {
             .then(function (response){
                 alert(response.data);
                 me.loadComment(me.content_id,1);
+                me.loadCommentCount(content_id);
             })
             .catch(function (error) {
                 console.log(error);
