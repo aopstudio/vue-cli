@@ -40,8 +40,11 @@ export default {
                     localStorage.setItem('username',response.data.username);
                     localStorage.setItem('role',response.data.role);
                     me.$store.commit("login",true);
-                    if(response.data.role=="ROLE_ADMIN"){
+                    if(response.data.role=="ROLE_ADMIN"||response.data.role=="ROLE_ROOT"){
                         me.$store.commit("admin",true);
+                    }
+                    if(response.data.role=="ROLE_ROOT"){
+                        me.$store.commit("root",true);
                     }
                     window.alert('登录成功');
                     me.$router.push('/')
@@ -51,7 +54,7 @@ export default {
                 
             })
             .catch(function (error) {
-                window.alert('未知错误，登录失败');
+                window.console.log(error);
             });
             
         }

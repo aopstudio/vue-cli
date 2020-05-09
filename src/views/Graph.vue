@@ -15,7 +15,7 @@
     <div class="newItem" v-if="this.$store.state.logged">
         <el-form :model="newItem" ref="newItem">
             <el-form-item prop="source" label="新建关系">
-                <el-input v-model="newItem.from"></el-input>
+                <el-input v-model="newItem.from" placeholder="出节点"></el-input>
             </el-form-item>
             <el-form-item prop="relation" label="关系">
                 <el-select v-model="newItem.type" placeholder="请选择">
@@ -28,7 +28,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item prop="to">
-                <el-input v-model="newItem.to"></el-input>
+                <el-input v-model="newItem.to" placeholder="入节点"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button @click="add">添加</el-button>
@@ -99,7 +99,12 @@ export default {
         })
         .then(function (response){
             //me.packNode(response.data);
-            me.packRelation(response.data);
+            if(response.data.length==0){
+                window.alert("搜索不到相关结果，请尝试外部搜索");
+            }
+            else{
+                me.packRelation(response.data);
+            }
         })
         .catch(function (error) {
             console.log(error);
@@ -305,7 +310,7 @@ export default {
         })
         .catch(function (error) {
             window.console.log(error);
-            window.alert('查询失败');
+            window.alert('找不到结果');
         });
     },
     packExternal(data){

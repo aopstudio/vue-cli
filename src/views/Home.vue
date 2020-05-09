@@ -17,15 +17,18 @@
                 <div class="bottom clearfix">
                   <div class="time"></div>
                   <el-button type="text" class="button" @click="jump(item.id)">开始学习</el-button>
+                  <el-button v-if="$store.state.isAdmin" type="warning" style="margin-left:80%" @click="deleteTutorial(item.id)">删除</el-button>
                 </div>
               </div>
             </el-card>
           </div>
         </el-col>
       </el-row>
-      <el-row v-if="this.$store.state.logged">
-        <el-input type="text" v-model="new_title.headline"></el-input>
-        <el-button @click="add">新建</el-button>
+      <el-row v-if="this.$store.state.isAdmin" style="margin-top:10px">
+        <el-col :span=8>
+          <el-input type="text" v-model="new_title.headline" placeholder="输入新课程标题"></el-input>
+          <el-button @click="add" style="margin-top:10px">新建</el-button>
+        </el-col>
       </el-row>
     </el-main>
   </el-container>
@@ -53,6 +56,7 @@ export default {
         catagory_id:0
       },
       logged:false,
+      isAdmin:this.$store.state.isAdmin
     }
   },
   mounted(){
@@ -74,6 +78,23 @@ export default {
           console.log(error);
       });
     },
+    deleteTutorial(title_id){
+      let me=this;
+      axios.get('http://localhost:8080/tutorial/deleteTitle',
+      {
+        params:{
+          titleId:title_id
+        }
+      },
+      )
+      .then(function (response){
+          window.alert("删除成功");
+          me.loadCatagory();
+      })
+      .catch(function (error) {
+          window.console.log(error);
+      });
+    },
     loadCatagory(){
       let me=this;
       axios.get('http://localhost:8080/tutorial/catagory')
@@ -90,8 +111,14 @@ export default {
     },
     add(){
       let me=this;
-      axios.post('http://localhost:8080/tutorial/title',me.new_title)
+      axios.post('http://localhost:8080/tutorial/title',me.new_title,
+      {
+          headers:{
+              'Authorization':localStorage.getItem('token')
+          }
+      })
       .then(function(response){
+        window.alert("添加成功");
         me.loadTitle(me.new_title.catagory_id)
       })
       .catch(function (error) {

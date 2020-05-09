@@ -10,13 +10,13 @@
         <el-main class="editor">
         <!--<mavon-editor v-model="value" :toolbarsFlag="false" defaultOpen="preview" />-->
             <markdown-it-vue v-if="!edit" class="md-body" :content="content.text"/>
-            <div v-if="this.$store.state.logged">
-            <mavon-editor v-model="content.text" v-if="edit" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
-            <el-button v-if="!edit" type="primary" @click="edit=!edit" style="margin-top:15px">修改</el-button>
-            <el-button v-if="edit" type="primary" @click="submitChange()" style="margin-top:15px">提交修改</el-button>
-            <el-button v-if="edit" type="primary" @click="edit=!edit" style="margin-top:15px">取消</el-button>
-            <el-button v-if="!edit" type="primary" @click="create()">新建</el-button>
-            <el-button v-if="!edit" type="primary" @click="deleteContent()">删除</el-button>
+            <div v-if="this.$store.state.isAdmin">
+                <mavon-editor v-model="content.text" v-if="edit" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
+                <el-button v-if="!edit" type="primary" @click="edit=!edit" style="margin-top:15px">修改</el-button>
+                <el-button v-if="edit" type="primary" @click="submitChange()" style="margin-top:15px">提交修改</el-button>
+                <el-button v-if="edit" type="primary" @click="edit=!edit" style="margin-top:15px">取消</el-button>
+                <el-button v-if="!edit" type="primary" @click="create()">新建</el-button>
+                <el-button v-if="!edit" type="primary" @click="deleteContent()">删除</el-button>
             </div>
             <h1>共{{comment_count}}条评论</h1>
             <el-card class="comment" v-for="item in comments" :key="item.id" style="margin-top:10px;width:80%">

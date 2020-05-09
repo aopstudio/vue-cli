@@ -8,6 +8,7 @@ export default new Vuex.Store({
     keyword:"0",
     logged:false,
     isAdmin:false,
+    isRoot:false
   },
   mutations: {
     login (state, n) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     admin (state,n){
       state.isAdmin = n
+    },
+    root (state,n){
+      state.isRoot=n
     }
     
   },

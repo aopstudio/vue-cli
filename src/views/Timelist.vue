@@ -21,7 +21,7 @@
                 <el-link @click="jump(data.headline)" style="font-size: 25px;padding: 15px;">{{data.headline}}</el-link>
             </div>-->
         </div>
-        <div class="form-group" v-if="this.$store.state.logged">
+        <div class="form-group" v-if="this.$store.state.isAdmin">
             <h2>新建内容</h2>  
             <h3>标题</h3>
             <el-input type="text" class="form-control" placeholder="标题" v-model='title.headline'></el-input>

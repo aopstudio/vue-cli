@@ -5,6 +5,7 @@
         <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal"  router>
             <!--<el-menu-item index="/info">个人资料</el-menu-item>-->
             <el-menu-item index="/password">修改密码</el-menu-item>
+            <el-menu-item index="/changeRole" v-if="$store.state.isRoot">修改用户权限</el-menu-item>
         </el-menu>
         </el-col>
         <el-col :span=3 style="margin-top:20px">
