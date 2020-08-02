@@ -12,6 +12,7 @@ import Register from '../views/Register.vue'
 import Manage from '../views/Manage.vue'
 import Password from '../views/Password.vue'
 import Info from '../views/Info.vue'
+import Role from '../views/Role.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -77,6 +78,11 @@ Vue.use(VueRouter)
         path: '/password',
         name: 'Password',
         component: Password
+      },
+      {
+        path: 'changeRole',
+        name: 'Role',
+        component: Role
       }
     ]
   },
