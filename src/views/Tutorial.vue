@@ -8,15 +8,18 @@
             </el-menu>
         </el-aside>
         <el-main class="editor">
+            <h1>{{article.title}}</h1>
         <!--<mavon-editor v-model="value" :toolbarsFlag="false" defaultOpen="preview" />-->
-            <markdown-it-vue v-if="!edit" class="md-body" :content="content.text"/>
-            <div v-if="this.$store.state.isAdmin">
-                <mavon-editor v-model="content.text" v-if="edit" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
+            <markdown-it-vue v-if="!edit" class="md-body" :content="article.content"/>
+            <div><!--v-if="this.$store.state.isAdmin"-->
+                <mavon-editor v-model="article.content" v-if="edit" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
                 <el-button v-if="!edit" type="primary" @click="edit=!edit" style="margin-top:15px">修改</el-button>
                 <el-button v-if="edit" type="primary" @click="submitChange()" style="margin-top:15px">提交修改</el-button>
                 <el-button v-if="edit" type="primary" @click="edit=!edit" style="margin-top:15px">取消</el-button>
-                <el-button v-if="!edit" type="primary" @click="create()">新建</el-button>
+                <!--
+                    <el-button v-if="!edit" type="primary" @click="create()">新建</el-button>
                 <el-button v-if="!edit" type="primary" @click="deleteContent()">删除</el-button>
+                -->
             </div>
             <h1>共{{comment_count}}条评论</h1>
             <el-card class="comment" v-for="item in comments" :key="item.id" style="margin-top:10px;width:80%">
@@ -53,10 +56,9 @@ export default {
     data () {
         return{
             value:'# asdf',
-            title_id:this.$route.params.id,
-            content_id:0,
+            article_id:this.$route.params.id,
             content_view_list:[],
-            content:{},
+            article:{},
             comments:[],
             newCommentText:'',
             pages:0,
@@ -65,37 +67,22 @@ export default {
         }
     },
     mounted(){
-        this.loadHeadline();
+        this.loadArticle(this.article_id);
     },
     methods: {
-        loadHeadline(){
-            let me=this;
-            axios.get('http://localhost:8080/tutorial/contentView',{
-                params:{
-                    titleId:me.title_id
-                }
-            })
-            .then(function (response){
-                me.content_view_list=response.data;
-                me.loadContent(me.content_view_list[0].content_id);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        },
         handleCurrentChange(val){
             this.loadComment(this.content_id,val)
         },
-        loadContent(content_id){
+        loadArticle(article_id){
             let me=this;
-            me.content_id=content_id;
-            axios.get('http://localhost:8080/tutorial/content',{
+            me.article_id=article_id;
+            axios.get('http://localhost:8080/article',{
                 params:{
-                    id:content_id
+                    id:article_id
                 }
             })
             .then(function (response){
-                me.content=response.data
+                me.article=response.data
             })
             .catch(function (error) {
                 console.log(error);
@@ -120,11 +107,11 @@ export default {
         },
         submitChange(){
             let me=this;
-            axios.post('http://localhost:8080/tutorial/content',me.content,
+            axios.put('http://localhost:8080/article',me.article,
             {
                 headers:{
                     'Authorization':localStorage.getItem('token')
-                }
+                },
             })
             .then(function (response){
                 window.alert("修改成功");

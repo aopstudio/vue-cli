@@ -1,22 +1,15 @@
 <template>
   <el-container>
-    <el-aside width="20%">
-      <el-menu>
-        <el-menu-item v-for="item in tutorial_catagory_list" :key="item.id" :index="item.id" @click="loadTitle(item.id)">
-          {{item.name}}
-        </el-menu-item>
-      </el-menu>
-    </el-aside>
     <el-main class="home">
       <el-row :gutter=10 >
-        <el-col :span=8 v-for="item in tutorial_title_list" :key="item.id">
+        <el-col :span=8 v-for="item in article_title_list" :key="item.id">
           <div style="margin-top:20px"> 
             <el-card> 
               <div style="padding: 15px;">
-                <div style="height:20px">{{item.headline}}</div>
+                <div style="height:20px">{{item.title}}</div>
                 <div class="bottom clearfix">
                   <div class="time"></div>
-                  <el-button type="text" class="button" @click="jump(item.id)">开始学习</el-button>
+                  <el-button type="text" class="button" @click="jump(item.id)">查看</el-button>
                   <el-button v-if="$store.state.isAdmin" type="warning" style="margin-left:80%" @click="deleteTutorial(item.id)">删除</el-button>
                 </div>
               </div>
@@ -24,10 +17,9 @@
           </div>
         </el-col>
       </el-row>
-      <el-row v-if="this.$store.state.isAdmin" style="margin-top:10px">
+      <el-row style="margin-top:10px"><!--v-if="this.$store.state.isAdmin"-->
         <el-col :span=8>
-          <el-input type="text" v-model="new_title.headline" placeholder="输入新课程标题"></el-input>
-          <el-button @click="add" style="margin-top:10px">新建</el-button>
+          <el-button @click="create()" style="margin-top:10px">新建</el-button>
         </el-col>
       </el-row>
     </el-main>
@@ -50,7 +42,7 @@ export default {
   data(){
     return {
       tutorial_catagory_list:[],
-      tutorial_title_list:[],
+      article_title_list:[],
       new_title:{
         headline:'',
         catagory_id:0
@@ -60,19 +52,14 @@ export default {
     }
   },
   mounted(){
-    this.loadCatagory();
+    this.loadTitle();
   },
   methods:{
-    loadTitle(id){
+    loadTitle(){
       let me=this;
-      axios.get('http://localhost:8080/tutorial/title',{
-        params:{
-            catagoryId:id
-        }
-      })
+      axios.get('http://localhost:8080/article/title')
       .then(function (response){
-          me.tutorial_title_list=response.data;
-          me.new_title.catagory_id=id;
+          me.article_title_list=response.data;
       })
       .catch(function (error) {
           console.log(error);
@@ -109,22 +96,9 @@ export default {
     jump(id){
       this.$router.push('/tutorial/'+id);
     },
-    add(){
-      let me=this;
-      axios.post('http://localhost:8080/tutorial/title',me.new_title,
-      {
-          headers:{
-              'Authorization':localStorage.getItem('token')
-          }
-      })
-      .then(function(response){
-        window.alert("添加成功");
-        me.loadTitle(me.new_title.catagory_id)
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
-    }
+    create(){
+      this.$router.push('/editor/'+this.title_id);
+    },
   },
    computed: {
       listenlogged() {
