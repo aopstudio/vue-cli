@@ -97,7 +97,7 @@ export default {
       this.$router.push('/tutorial/'+id);
     },
     create(){
-      this.$router.push('/editor/'+this.title_id);
+      this.$router.push('/createArticle');
     },
   },
    computed: {

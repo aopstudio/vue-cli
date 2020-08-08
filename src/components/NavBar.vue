@@ -3,8 +3,7 @@
       <el-col :span=21>
       <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal"  router>
         <el-menu-item index="/">Home</el-menu-item>
-        <el-menu-item index="/timelist">Timelist</el-menu-item>
-        <el-menu-item index="/graph">Graph</el-menu-item>
+        <!-- <el-menu-item index="/timelist">Timelist</el-menu-item> -->
       </el-menu> 
       </el-col>
       <el-col :span=3 style="margin-top:20px" v-if="!this.$store.state.logged">

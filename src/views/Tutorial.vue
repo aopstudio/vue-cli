@@ -1,24 +1,21 @@
 <template>
     <el-container>
-        <el-aside width="20%">
-            <el-menu>
-                <el-menu-item v-for="item in content_view_list" :key="item.content_id" :index="item.content_id" @click="loadContent(item.content_id)">
-                {{item.content_headline}}
-                </el-menu-item>
-            </el-menu>
+        <el-aside width="2%">
         </el-aside>
         <el-main class="editor">
-            <h1>{{article.title}}</h1>
+            <h1 v-if="!edit">{{article.title}}</h1>
+            <el-input v-if="edit" type="text" v-model="article.title"></el-input>
         <!--<mavon-editor v-model="value" :toolbarsFlag="false" defaultOpen="preview" />-->
             <markdown-it-vue v-if="!edit" class="md-body" :content="article.content"/>
             <div><!--v-if="this.$store.state.isAdmin"-->
-                <mavon-editor v-model="article.content" v-if="edit" :toolbarsFlag="false" defaultOpen="preview" style="margin-top:15px"/>
+                <mavon-editor v-if="edit" v-model="article.content" ref="md" :toolbarsFlag="true" @imgAdd="$imgAdd" @imgDel="$imgDel" defaultOpen="preview" style="margin-top:15px"/>
                 <el-button v-if="!edit" type="primary" @click="edit=!edit" style="margin-top:15px">修改</el-button>
                 <el-button v-if="edit" type="primary" @click="submitChange()" style="margin-top:15px">提交修改</el-button>
                 <el-button v-if="edit" type="primary" @click="edit=!edit" style="margin-top:15px">取消</el-button>
+                <el-button v-if="!edit" type="danger" @click="deleteContent()">删除</el-button>
                 <!--
                     <el-button v-if="!edit" type="primary" @click="create()">新建</el-button>
-                <el-button v-if="!edit" type="primary" @click="deleteContent()">删除</el-button>
+                
                 -->
             </div>
             <h1>共{{comment_count}}条评论</h1>
@@ -70,6 +67,27 @@ export default {
         this.loadArticle(this.article_id);
     },
     methods: {
+        $imgAdd(pos, $file){
+            // 第一步.将图片上传到服务器.
+           var formdata = new FormData();
+           formdata.append('image', $file);
+           let me =this;
+           axios.post('http://localhost:8080/image',formdata, {
+             headers: { 'Content-Type': 'multipart/form-data' },
+           }
+           ).then(function (response){
+               // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+               /**
+               * $vm 指为mavonEditor实例，可以通过如下两种方式获取
+               * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
+               * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
+               */
+               me.$refs.md.$img2Url(pos, response.data);
+           })
+           .catch(function (error) {
+                console.log(error);
+            });
+        },
         handleCurrentChange(val){
             this.loadComment(this.content_id,val)
         },
@@ -92,14 +110,14 @@ export default {
         },
         deleteContent(){
             let me=this;
-            axios.get('http://localhost:8080/tutorial/deleteContent',{
+            axios.delete('http://localhost:8080/article',{
                 params:{
-                    id:me.content_id
+                    id:me.article_id
                 } 
             })
             .then(function (response){
                 window.alert("删除成功");
-                me.loadHeadline();
+                me.$router.push('/');
             })
             .catch(function (error) {
                 window.console.log(error);
@@ -120,9 +138,6 @@ export default {
             .catch(function (error) {
                 console.log(error);
             });
-        },
-        create(){
-            this.$router.push('/editor/'+this.title_id);
         },
         newComment(){
             let me=this;
