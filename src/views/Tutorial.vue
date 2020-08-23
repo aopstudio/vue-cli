@@ -52,6 +52,7 @@ export default {
     name: 'Tutorial',
     data () {
         return{
+            server:process.env.VUE_APP_SERVER,
             value:'# asdf',
             article_id:this.$route.params.id,
             content_view_list:[],
@@ -72,7 +73,7 @@ export default {
            var formdata = new FormData();
            formdata.append('image', $file);
            let me =this;
-           axios.post('http://localhost:8080/image',formdata, {
+           axios.post(`${this.server}/image`,formdata, {
              headers: { 'Content-Type': 'multipart/form-data' },
            }
            ).then(function (response){
@@ -94,7 +95,7 @@ export default {
         loadArticle(article_id){
             let me=this;
             me.article_id=article_id;
-            axios.get('http://localhost:8080/article',{
+            axios.get(`${this.server}/article`,{
                 params:{
                     id:article_id
                 }
@@ -110,7 +111,7 @@ export default {
         },
         deleteContent(){
             let me=this;
-            axios.delete('http://localhost:8080/article',{
+            axios.delete(`${this.server}/article`,{
                 params:{
                     id:me.article_id
                 } 
@@ -125,7 +126,7 @@ export default {
         },
         submitChange(){
             let me=this;
-            axios.put('http://localhost:8080/article',me.article,
+            axios.put(`${this.server}/article`,me.article,
             {
                 headers:{
                     'Authorization':localStorage.getItem('token')
@@ -141,7 +142,7 @@ export default {
         },
         newComment(){
             let me=this;
-            axios.post('http://localhost:8080/tutorial/comment',
+            axios.post(`${this.server}/tutorial/comment`,
             {
                 token:localStorage.getItem('token'),
                 contentId:me.content_id,
@@ -163,7 +164,7 @@ export default {
         },
         loadComment(content_id,page){
             let me=this;
-            axios.get('http://localhost:8080/tutorial/comment',{
+            axios.get(`${this.server}/tutorial/comment`,{
                 params:{
                     id:content_id,
                     page:page
@@ -178,7 +179,7 @@ export default {
         },
         loadCommentCount(content_id){
             let me=this;
-            axios.get('http://localhost:8080/tutorial/commentCount',{
+            axios.get(`${this.server}/tutorial/commentCount`,{
                 params:{
                     id:content_id,
                 }

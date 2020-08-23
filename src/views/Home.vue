@@ -41,6 +41,7 @@ export default {
   },
   data(){
     return {
+      server:process.env.VUE_APP_SERVER,
       tutorial_catagory_list:[],
       article_title_list:[],
       new_title:{
@@ -57,7 +58,7 @@ export default {
   methods:{
     loadTitle(){
       let me=this;
-      axios.get('http://localhost:8080/article/title')
+      axios.get(`${this.server}/article/title`)
       .then(function (response){
           me.article_title_list=response.data;
       })
@@ -67,7 +68,7 @@ export default {
     },
     deleteTutorial(title_id){
       let me=this;
-      axios.get('http://localhost:8080/tutorial/deleteTitle',
+      axios.get(`${this.server}/tutorial/deleteTitle`,
       {
         params:{
           titleId:title_id
@@ -84,7 +85,7 @@ export default {
     },
     loadCatagory(){
       let me=this;
-      axios.get('http://localhost:8080/tutorial/catagory')
+      axios.get(`${this.server}/tutorial/catagory`)
       .then(function (response){
           me.tutorial_catagory_list=response.data;
           me.loadTitle(me.tutorial_catagory_list[0].id);

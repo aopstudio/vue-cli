@@ -12,6 +12,7 @@ export default {
     name:"Editor",
     data (){
         return{
+            server:process.env.VUE_APP_SERVER,
             article:{
                 title:'',
                 content:''
@@ -21,7 +22,7 @@ export default {
     methods:{
         submit(){
             let me=this;
-            axios.post('http://localhost:8080/article',me.article)
+            axios.post(`${this.server}/article`,me.article)
             // {
             //     headers:{
             //         'Authorization':localStorage.getItem('token')
@@ -41,7 +42,7 @@ export default {
            var formdata = new FormData();
            formdata.append('image', $file);
            let me =this;
-           axios.post('http://localhost:8080/image',formdata, {
+           axios.post(`${this.server}/image`,formdata, {
              headers: { 'Content-Type': 'multipart/form-data' },
            }
            ).then(function (response){
